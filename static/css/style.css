@@ -1,0 +1,8 @@
+body {
+  box-sizing: border-box;
+  background-color: #eef7ff;
+}
+
+.sign-up:active {
+  color: #f8eded;
+}
