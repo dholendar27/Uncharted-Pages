@@ -9,8 +9,6 @@ This is a simple blog application built using Flask, where users can sign up, lo
 - [Setup Instructions](#setup-instructions)
 - [Usage](#usage)
 - [Folder Structure](#folder-structure)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Project Features
 
@@ -43,8 +41,8 @@ This is a simple blog application built using Flask, where users can sign up, lo
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/flask-blog.git
-   cd flask-blog
+   [git clone https://github.com/dholendar27/Uncharted-Pages.git](https://github.com/dholendar27/Uncharted-Pages.git)
+   cd Uncharted-Pages
    ```
 
 2. **Create a virtual environment**
