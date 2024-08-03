@@ -62,7 +62,27 @@ def delete_post(id):
     db.session.commit()
     return redirect(url_for('blog.posts'))
 
-
+@blog.route('/post/<int:id>',endpoint='post')
+@login_required
+def get_post(id):
+    post = Post.query.get(id)
+    print(post)
+    posts_with_images = []
+    if post.image:  # Ensure there is image data
+        # Encode the binary data to Base64
+        encoded_image = base64.b64encode(post.image).decode('utf-8')
+        # Append the post data and encoded image to the list
+        posts_with_images.append({
+            'id': post.id,
+            'title': post.title,
+            'description': post.description,
+            'image': encoded_image,
+            'mimetype': post.mimetype,
+            'markdown': post.markdown,
+            'created_at': post.created_at,
+            'user_id': post.user_id,
+        })
+    return render_template('view_post.html', post=posts_with_images[0], user=current_user)
 
 @blog.route('/create',endpoint='create', methods=["GET","POST"])
 @login_required

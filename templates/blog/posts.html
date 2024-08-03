@@ -17,7 +17,7 @@
           <h5 class="card-title">{{ post.title }}</h5>
           <p class="card-text">{{ post.description }}</p>
           <p class="card-text">{{ post.created_at }}</p>
-          <a href="#" class="btn open-btn"
+          <a href="/blog/post/{{post.id}}" class="btn open-btn"
             ><img
               class="arrow"
               src="{{url_for('static',filename='images/right-arrow.png')}}"

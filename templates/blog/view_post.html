@@ -1,0 +1,56 @@
+{% extends 'navbase.html' %} {% block content %}
+<div class="container mt-2 markdown-container rounded">
+  <div class="row bg-white p-3">
+    <!-- Rendered Markdown Section Full Screen -->
+    <div class="col-12">
+      <div
+        id="markdown-output"
+        class="border p-3 bg-light rounded"
+        style="min-height: 100vh; overflow-y: auto"
+      >
+        <!-- Rendered Markdown will appear here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Include Marked.js from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<!-- JavaScript to Handle Dynamic Markdown Rendering -->
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+     const markdownOutput = document.getElementById("markdown-output");
+
+     // Data from Jinja template
+     const post = {
+       id: {{ post.id }},
+       title: "{{ post.title }}",
+       description: "{{ post.description }}",
+       image: "data:{{ post.mimetype }};base64,{{ post.image }}",
+       mimetype: "{{ post.mimetype }}",
+       markdown: `{{ post.markdown | safe }}`,
+       created_at: "{{ post.created_at }}",
+       user_id: {{ post.user_id }},
+     };
+
+     // Update the Markdown output with post data
+     function updateMarkdown(post) {
+       const { title, description, image, markdown, created_at, user_id } = post;
+
+       const header = `<h1>${title}</h1>`;
+       const desc = `<p>${description}</p>`;
+  const img = image
+     ? `<img src="${image}" alt="Uploaded Image" style="max-width: 100%; height: auto; border-radius: 10px;" />`
+     : "";
+       const meta = `<small>Created on: ${created_at} | User ID: ${user_id}</small>`;
+
+       // Render the combined content with Markdown
+       markdownOutput.innerHTML = img + header + desc + meta + marked.parse(markdown);
+     }
+
+     // Initial render
+     updateMarkdown(post);
+   });
+</script>
+{% endblock %}
