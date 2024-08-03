@@ -1,0 +1,144 @@
+{% extends 'navbase.html' %} {% block content %}
+<div class="container mt-2 markdown-container rounded">
+  <div class="row bg-white p-3">
+    <!-- Input Fields Section -->
+    <form method="POST" action="/blog/create" enctype="multipart/form-data">
+      <div class="col-md-6">
+        <div class="mb-1 p-2">
+          <!-- File Upload Input -->
+          <label class="form-label" for="customFile">Upload Image</label>
+          <input
+            type="file"
+            class="form-control"
+            id="customFile"
+            name="image"
+            accept="image/*"
+          />
+        </div>
+
+        <!-- Title Input -->
+        <div class="mb-1 p-2">
+          <label for="title-input" class="form-label">Enter Title</label>
+          <input
+            type="text"
+            id="title-input"
+            name="title"
+            class="form-control"
+            aria-label="Title"
+            aria-describedby="inputGroup-sizing-default"
+          />
+        </div>
+
+        <!-- Description Input with Fixed Height -->
+        <div class="mb-1 p-2">
+          <label for="description-input" class="form-label"
+            >Enter Description</label
+          >
+          <textarea
+            id="description-input"
+            name="description"
+            class="form-control"
+            rows="6"
+            placeholder="Write a description here..."
+            style="resize: none; overflow-y: auto; height: 150px"
+          ></textarea>
+        </div>
+
+        <!-- Markdown Input -->
+        <div class="mb-1 p-2">
+          <label for="markdown-input" class="form-label">Enter Markdown</label>
+          <textarea
+            id="markdown-input"
+            name="markdown"
+            class="form-control"
+            rows="10"
+            placeholder="Write your Markdown here..."
+            style="resize: none; height: 300px"
+          ></textarea>
+        </div>
+
+        <!-- Buttons to View Markdown and Create Post -->
+        <div class="mb-3 p-2 float-right">
+          <button type="button" id="view-markdown" class="btn btn-secondary">
+            View Markdown
+          </button>
+          <button type="submit" class="btn btn-primary">Create Post</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Rendered Markdown Section -->
+    <div class="col-md-6">
+      <div
+        id="markdown-output"
+        class="border p-3"
+        style="min-height: 100%; overflow-y: auto"
+      >
+        <!-- Rendered Markdown will appear here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Include Marked.js from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<!-- JavaScript to Handle Markdown Rendering and Image Upload -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const markdownInput = document.getElementById("markdown-input");
+    const markdownOutput = document.getElementById("markdown-output");
+    const customFileInput = document.getElementById("customFile");
+    const titleInput = document.getElementById("title-input");
+    const descriptionInput = document.getElementById("description-input");
+    const viewMarkdownButton = document.getElementById("view-markdown");
+
+    // Variables to store the image URL and current Markdown text
+    let imageURL = "";
+
+    // Function to update the Markdown output
+    function updateMarkdown() {
+      const title = titleInput.value;
+      const description = descriptionInput.value;
+      const markdownText = markdownInput.value;
+
+      // Create a title and description section
+      const header = title ? `<h1>${title}</h1>` : "";
+      const desc = description ? `<p>${description}</p>` : "";
+
+      // Add the image if it was uploaded
+      const image = imageURL
+        ? `<img src="${imageURL}" alt="Uploaded Image" style="max-width: 100%; height: auto; border-radius: 10px;" />`
+        : "";
+
+      // Set the Markdown output including the image, title, description, and Markdown text
+      markdownOutput.innerHTML =
+        image + header + desc + marked.parse(markdownText);
+    }
+
+    // Handle file upload
+    customFileInput.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          imageURL = e.target.result;
+          updateMarkdown(); // Update markdown after image upload
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Handle button click to update Markdown viewer
+    viewMarkdownButton.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent the form from submitting
+      updateMarkdown();
+    });
+
+    // Clear inputs when the page is refreshed
+    window.addEventListener("beforeunload", clearInputs);
+    // Also clear inputs on page load for single-page apps
+    clearInputs();
+  });
+</script>
+{% endblock %}

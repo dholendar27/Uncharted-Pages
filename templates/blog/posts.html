@@ -1,31 +1,36 @@
 {% extends 'navbase.html' %} {% block content %}
 <div class="container mt-4 cards">
   <div class="row">
-    {% for card in cards %}
+    {% for post in posts %}
     <div class="col-md-6 mb-4">
       <div class="card posts">
-        {% if card.image %}
+        {% if post.image %}
         <img
           class="blog-images"
-          src="data:{{ card.mimetype }};base64,{{ card.image }}"
+          src="data:{{ post.mimetype }};base64,{{ post.image }}"
           alt="Post Image"
         />
         {% else %}
         <p>No image available.</p>
         {% endif %}
         <div class="card-body">
-          <h5 class="card-title">{{ card.title }}</h5>
-          <p class="card-text">{{ card.description }}</p>
-          <p class="card-text">{{ card.created_at }}</p>
+          <h5 class="card-title">{{ post.title }}</h5>
+          <p class="card-text">{{ post.description }}</p>
+          <p class="card-text">{{ post.created_at }}</p>
           <a href="#" class="btn open-btn"
             ><img
               class="arrow"
               src="{{url_for('static',filename='images/right-arrow.png')}}"
           /></a>
+           <button class="btn btn-danger delete-btn">
+          <a href="/blog/delete/{{post.id}}">delete</a>
+        </button>
+      </div>
         </div>
       </div>
+
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
+  {% endblock %}
 </div>
-{% endblock %}

@@ -6,3 +6,38 @@ body {
 .sign-up:active {
   color: #f8eded;
 }
+
+.posts {
+  width: 90%;
+  margin: auto;
+  border-radius: 10px !important;
+}
+
+.post-image {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.open-btn {
+  float: right;
+}
+
+.arrow {
+  width: 20px;
+  height: 20px;
+}
+
+.markdown-container {
+  min-width: 90%;
+}
+
+.blog-images {
+  padding: 10px;
+  border-radius: 10px;
+  height: 300px;
+}
+
+.delete-btn a {
+  text-decoration: none;
+  color: white;
+}
